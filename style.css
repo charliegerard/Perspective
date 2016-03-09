@@ -6,3 +6,7 @@ p#headtrackerMessage{
   font-size: 40px;
   font-weight: 200;
 }
+
+#inputVideo{
+  display: none !important;
+}
