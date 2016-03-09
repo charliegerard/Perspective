@@ -2,9 +2,20 @@ body{
   margin: 0;
 }
 
+#headtrackerMessageDiv{
+  position: absolute;
+  bottom: 0.5em;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+}
+
 p#headtrackerMessage{
-  font-size: 40px;
+  font-size: 15px;
+  font-family: 'Open Sans';
+  color: white;
   font-weight: 200;
+  text-align: center;
 }
 
 #inputVideo{
