@@ -2,7 +2,7 @@ window.onload = function(){
   var videoInput = document.getElementById('inputVideo');
   var canvasInput = document.getElementById('inputCanvas');
   var container, stats;
-  var camera, scene, renderer, particle;
+  var camera, scene, renderer, particle, mesh;
   var mouseX = 0, mouseY = 0;
   var windowHalfX = window.innerWidth / 2;
   var windowHalfY = window.innerHeight / 2;
@@ -20,109 +20,85 @@ window.onload = function(){
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
-    scene = new THREE.Scene();
-    // scene.fog = new THREE.Fog( 0x000000, 1, 5000 );
-
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 5000 );
+    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
     camera.position.z = 1000;
+    scene = new THREE.Scene();
+    var data = generateHeight( 1024, 1024 );
+
     scene.add( camera );
 
     // set up camera controller
-    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [0,0,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
+    // was 0,0,100 when just planes
+    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [60,100,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
 
     //---------------- PLANES ----------------------
 
-    //top wall
-    plane1 = new THREE.Mesh( new THREE.PlaneGeometry( 500, 3000, 5, 15 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true } ) );
-    plane1.rotation.x = Math.PI/2;
-    plane1.position.y = 250;
-    plane1.position.z = 50-1500;
+    // //top wall
+    // plane1 = new THREE.Mesh( new THREE.PlaneGeometry( 500, 3000, 5, 15 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true } ) );
+    // plane1.rotation.x = Math.PI/2;
+    // plane1.position.y = 250;
+    // plane1.position.z = 50-1500;
     // scene.add( plane1 );
-
-    //left wall
-    plane2 = new THREE.Mesh( new THREE.PlaneGeometry( 3000, 500, 15, 5 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true } ) );
-    plane2.rotation.y = Math.PI/2;
-    plane2.position.x = -250;
-    plane2.position.z = 50-1500;
+    //
+    // //left wall
+    // plane2 = new THREE.Mesh( new THREE.PlaneGeometry( 3000, 500, 15, 5 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true } ) );
+    // plane2.rotation.y = Math.PI/2;
+    // plane2.position.x = -250;
+    // plane2.position.z = 50-1500;
     // scene.add( plane2 );
-
-    //right wall
-    plane3 = new THREE.Mesh( new THREE.PlaneGeometry( 3000, 500, 15, 5 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true	} ) );
-    plane3.rotation.y = -Math.PI/2;
-    plane3.position.x = 250;
-    plane3.position.z = 50-1500;
+    //
+    // //right wall
+    // plane3 = new THREE.Mesh( new THREE.PlaneGeometry( 3000, 500, 15, 5 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true	} ) );
+    // plane3.rotation.y = -Math.PI/2;
+    // plane3.position.x = 250;
+    // plane3.position.z = 50-1500;
     // scene.add( plane3 );
-
-    //bottom wall
-    plane4 = new THREE.Mesh( new THREE.PlaneGeometry( 500, 3000, 5, 15 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true	} ) );
-    plane4.rotation.x = -Math.PI/2;
-    plane4.position.y = -250;
-    plane4.position.z = 50-1500;
+    //
+    // //bottom wall
+    // plane4 = new THREE.Mesh( new THREE.PlaneGeometry( 500, 3000, 5, 15 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true	} ) );
+    // plane4.rotation.x = -Math.PI/2;
+    // plane4.position.y = -250;
+    // plane4.position.z = 50-1500;
     // scene.add( plane4 );
 
-    var material = new THREE.SpriteMaterial({
-      map: new THREE.CanvasTexture(generateSprite()),
-      blending: THREE.AdditiveBlending
-    });
 
-    for(var i = 0; i < 1000; i++){
-      particle = new THREE.Sprite(material);
-      initParticle(particle, i * 10);
-      scene.add(particle);
+    var material = new THREE.MeshBasicMaterial( { overdraw: 0.5, wireframe: true } );
+    var quality = 16, step = 1024 / quality;
+    var geometry = new THREE.PlaneGeometry( 3000, 3000, quality - 1, quality - 1 );
+
+    //rotate so can view from the top;
+    geometry.rotateX( - Math.PI / 2 );
+
+    for ( var i = 0, l = geometry.vertices.length; i < l; i ++ ) {
+      var x = i % quality, y = Math.floor( i / quality );
+      geometry.vertices[ i ].y = data[ ( x * step ) + ( y * step ) * 1024 ] * 2 - 128;
     }
 
-    // renderer = new THREE.WebGLRenderer({ clearAlpha: 1 });
-    // renderer.setSize( window.innerWidth, window.innerHeight );
-
+    mesh = new THREE.Mesh( geometry, material );
+    scene.add( mesh );
     renderer = new THREE.CanvasRenderer();
-				renderer.setClearColor( 0x000040 );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
 
+
+    renderer.setPixelRatio( window.devicePixelRatio );
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    container.innerHTML = "";
     container.appendChild( renderer.domElement );
+
+
   }
 
-  function generateSprite() {
-		var canvas = document.createElement( 'canvas' );
-		canvas.width = 16;
-		canvas.height = 16;
-
-		var context = canvas.getContext( '2d' );
-		var gradient = context.createRadialGradient( canvas.width / 2, canvas.height / 2, 0, canvas.width / 2, canvas.height / 2, canvas.width / 2 );
-		gradient.addColorStop( 0, 'rgba(255,255,255,1)' );
-		gradient.addColorStop( 0.2, 'rgba(0,255,255,1)' );
-		gradient.addColorStop( 0.4, 'rgba(0,0,64,1)' );
-		gradient.addColorStop( 1, 'rgba(0,0,0,1)' );
-
-		context.fillStyle = gradient;
-		context.fillRect( 0, 0, canvas.width, canvas.height );
-
-		return canvas;
-	}
-
-  function initParticle( particle, delay ) {
-		var particle = this instanceof THREE.Sprite ? this : particle;
-		var delay = delay !== undefined ? delay : 0;
-
-		particle.position.set( 0, 0, 0 );
-		particle.scale.x = particle.scale.y = Math.random() * 32 + 16;
-
-		new TWEEN.Tween( particle )
-			.delay( delay )
-			.to( {}, 10000 )
-			.onComplete( initParticle )
-			.start();
-
-		new TWEEN.Tween( particle.position )
-			.delay( delay )
-			.to( { x: Math.random() * 4000 - 2000, y: Math.random() * 1000 - 500, z: Math.random() * 4000 - 2000 }, 10000 )
-			.start();
-
-		new TWEEN.Tween( particle.scale )
-			.delay( delay )
-			.to( { x: 0.01, y: 0.01 }, 10000 )
-			.start();
-	}
+  function generateHeight( width, height ) {
+    var data = new Uint8Array( width * height ), perlin = new ImprovedNoise(),
+    size = width * height, quality = 2, z = Math.random() * 100;
+    for ( var j = 0; j < 4; j ++ ) {
+      quality *= 4;
+      for ( var i = 0; i < size; i ++ ) {
+        var x = i % width, y = ~~ ( i / width );
+        data[ i ] += Math.abs( perlin.noise( x / quality, y / quality, z ) * 0.5 ) * quality + 10;
+      }
+    }
+    return data;
+  }
 
   function animate() {
     // renderer.render(scene, camera);
@@ -132,13 +108,11 @@ window.onload = function(){
   }
 
   function render() {
-    TWEEN.update();
-
     camera.position.x += ( mouseX - camera.position.x ) * 0.05;
-    camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+    camera.position.y += ( - mouseY - camera.position.y ) * 0.05 + 15;
     camera.lookAt( scene.position );
-
     renderer.render( scene, camera );
+
   }
 
   document.addEventListener('headtrackingEvent', function(event) {
