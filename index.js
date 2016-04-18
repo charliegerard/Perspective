@@ -8,7 +8,7 @@ window.onload = function(){
   var windowHalfY = window.innerHeight / 2;
 
   // Face detection setup
-  var htracker = new headtrackr.Tracker({altVideo : {ogv : "./media/capture5.ogv", mp4 : "./media/capture5.mp4"}});
+  var htracker = new headtrackr.Tracker({});
   htracker.init(videoInput, canvasInput);
   htracker.start();
 
