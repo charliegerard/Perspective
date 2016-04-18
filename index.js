@@ -61,10 +61,14 @@ window.onload = function(){
     // plane4.position.z = 50-1500;
     // scene.add( plane4 );
 
-
-    var material = new THREE.MeshBasicMaterial( { overdraw: 0.5, wireframe: true } );
+    //can add wireframe: true for wireframe effect
+    var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide}  );
     var quality = 16, step = 1024 / quality;
     var geometry = new THREE.PlaneGeometry( 3000, 3000, quality - 1, quality - 1 );
+
+    var directionalLight = new THREE.DirectionalLight( 0xffff00, 0.5 );
+    directionalLight.position.set( 0, 1, 0 );
+    scene.add( directionalLight );
 
     //rotate so can view from the top;
     geometry.rotateX( - Math.PI / 2 );
@@ -78,13 +82,11 @@ window.onload = function(){
     scene.add( mesh );
     renderer = new THREE.CanvasRenderer();
 
-
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setClearColor(new THREE.Color("#0d355a"), 1)
     container.innerHTML = "";
     container.appendChild( renderer.domElement );
-
-
   }
 
   function generateHeight( width, height ) {
