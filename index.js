@@ -16,11 +16,12 @@ window.onload = function(){
   animate();
 
   function init() {
-
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
+    camera.position.z = 1000;
+    camera.position.x = 1000;
     camera.position.z = 1000;
     scene = new THREE.Scene();
     var data = generateHeight( 1024, 1024 );
@@ -29,37 +30,7 @@ window.onload = function(){
 
     // set up camera controller
     // was 0,0,100 when just planes
-    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [60,100,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
-
-    //---------------- PLANES ----------------------
-
-    // //top wall
-    // plane1 = new THREE.Mesh( new THREE.PlaneGeometry( 500, 3000, 5, 15 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true } ) );
-    // plane1.rotation.x = Math.PI/2;
-    // plane1.position.y = 250;
-    // plane1.position.z = 50-1500;
-    // scene.add( plane1 );
-    //
-    // //left wall
-    // plane2 = new THREE.Mesh( new THREE.PlaneGeometry( 3000, 500, 15, 5 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true } ) );
-    // plane2.rotation.y = Math.PI/2;
-    // plane2.position.x = -250;
-    // plane2.position.z = 50-1500;
-    // scene.add( plane2 );
-    //
-    // //right wall
-    // plane3 = new THREE.Mesh( new THREE.PlaneGeometry( 3000, 500, 15, 5 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true	} ) );
-    // plane3.rotation.y = -Math.PI/2;
-    // plane3.position.x = 250;
-    // plane3.position.z = 50-1500;
-    // scene.add( plane3 );
-    //
-    // //bottom wall
-    // plane4 = new THREE.Mesh( new THREE.PlaneGeometry( 500, 3000, 5, 15 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true	} ) );
-    // plane4.rotation.x = -Math.PI/2;
-    // plane4.position.y = -250;
-    // plane4.position.z = 50-1500;
-    // scene.add( plane4 );
+    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [60,400,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
 
     //can add wireframe: true for wireframe effect
     var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide}  );
@@ -114,7 +85,6 @@ window.onload = function(){
     camera.position.y += ( - mouseY - camera.position.y ) * 0.05 + 15;
     camera.lookAt( scene.position );
     renderer.render( scene, camera );
-
   }
 
   document.addEventListener('headtrackingEvent', function(event) {
