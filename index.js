@@ -32,14 +32,36 @@ window.onload = function(){
     // was 0,0,100 when just planes
     headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [60,400,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
 
+
+    // create a skybox
+    var skyGeometry = new THREE.SphereGeometry(2000, 25, 25);
+    var texture = THREE.ImageUtils.loadTexture( "sky-dome.png" );
+    var skyMaterial = new THREE.MeshLambertMaterial({
+        map: texture,
+        shading: THREE.SmoothShading
+    });
+
+    var sky = new THREE.Mesh(skyGeometry, skyMaterial);
+    sky.material.side = THREE.BackSide;
+    scene.add(sky);
+
+
     //can add wireframe: true for wireframe effect
-    var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide}  );
+    var material = new THREE.MeshPhongMaterial( {color: "#2194ce", side: THREE.DoubleSide, shading: THREE.FlatShading}  );
     var quality = 16, step = 1024 / quality;
     var geometry = new THREE.PlaneGeometry( 3000, 3000, quality - 1, quality - 1 );
 
-    var directionalLight = new THREE.DirectionalLight( 0xffff00, 0.5 );
-    directionalLight.position.set( 0, 1, 0 );
-    scene.add( directionalLight );
+    var spotLight = new THREE.SpotLight( 0xffffff );
+    spotLight.position.set( 100, 1000, 100 );
+    spotLight.castShadow = true;
+    spotLight.shadow.mapSize.width = 1024;
+    spotLight.shadow.mapSize.height = 1024;
+
+    spotLight.shadow.camera.near = 500;
+    spotLight.shadow.camera.far = 4000;
+    spotLight.shadow.camera.fov = 30;
+
+    scene.add( spotLight );
 
     //rotate so can view from the top;
     geometry.rotateX( - Math.PI / 2 );
@@ -49,9 +71,13 @@ window.onload = function(){
       geometry.vertices[ i ].y = data[ ( x * step ) + ( y * step ) * 1024 ] * 2 - 128;
     }
 
+    var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1.5 );
+    scene.add( light );
+
     mesh = new THREE.Mesh( geometry, material );
+    mesh.position.y = -50;
     scene.add( mesh );
-    renderer = new THREE.CanvasRenderer();
+    renderer = new THREE.WebGLRenderer();
 
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
