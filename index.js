@@ -22,6 +22,8 @@ window.onload = function(){
 
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
     camera.position.z = 1000;
+    camera.position.x = 1000;
+    camera.position.y = 1000;
     scene = new THREE.Scene();
     var data = generateHeight( 1024, 1024 );
 
@@ -29,7 +31,8 @@ window.onload = function(){
 
     // set up camera controller
     // was 0,0,100 when just planes
-    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [60,100,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
+    // headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [60,300,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
+    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [0,0,70], new THREE.Vector3(0,0,0), {damping : 0.5});
 
     //---------------- PLANES ----------------------
 
@@ -108,14 +111,14 @@ window.onload = function(){
   }
 
   function render() {
-    camera.position.x += ( mouseX - camera.position.x ) * 0.05;
-    camera.position.y += ( - mouseY - camera.position.y ) * 0.05 + 15;
-    camera.lookAt( scene.position );
+    // camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+    // camera.position.y += ( - mouseY - camera.position.y ) * 0.05 + 15;
+    // camera.lookAt( scene.position );
     renderer.render( scene, camera );
 
   }
 
   document.addEventListener('headtrackingEvent', function(event) {
-    scene.fog = new THREE.Fog( 0x000000, 1+(event.z*27), 3000+(event.z*27) );
+    // scene.fog = new THREE.Fog( 0x000000, 1+(event.z*27), 3000+(event.z*27) );
   }, false);
 }
