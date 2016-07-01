@@ -8,7 +8,7 @@ window.onload = function(){
   var windowHalfY = window.innerHeight / 2;
 
   // Face detection setup
-  var htracker = new headtrackr.Tracker({altVideo : {ogv : "./media/capture5.ogv", mp4 : "./media/capture5.mp4"}});
+  var htracker = new headtrackr.Tracker({});
   htracker.init(videoInput, canvasInput);
   htracker.start();
 
@@ -16,14 +16,13 @@ window.onload = function(){
   animate();
 
   function init() {
-
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
     camera.position.z = 1000;
     camera.position.x = 1000;
-    camera.position.y = 1000;
+    camera.position.z = 1000;
     scene = new THREE.Scene();
     var data = generateHeight( 1024, 1024 );
 
@@ -31,43 +30,40 @@ window.onload = function(){
 
     // set up camera controller
     // was 0,0,100 when just planes
-    // headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [60,300,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
-    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [0,10,100], new THREE.Vector3(0,0,0), {damping : 0.5});
 
-    //---------------- PLANES ----------------------
-
-    // //top wall
-    // plane1 = new THREE.Mesh( new THREE.PlaneGeometry( 500, 3000, 5, 15 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true } ) );
-    // plane1.rotation.x = Math.PI/2;
-    // plane1.position.y = 250;
-    // plane1.position.z = 50-1500;
-    // scene.add( plane1 );
-    //
-    // //left wall
-    // plane2 = new THREE.Mesh( new THREE.PlaneGeometry( 3000, 500, 15, 5 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true } ) );
-    // plane2.rotation.y = Math.PI/2;
-    // plane2.position.x = -250;
-    // plane2.position.z = 50-1500;
-    // scene.add( plane2 );
-    //
-    // //right wall
-    // plane3 = new THREE.Mesh( new THREE.PlaneGeometry( 3000, 500, 15, 5 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true	} ) );
-    // plane3.rotation.y = -Math.PI/2;
-    // plane3.position.x = 250;
-    // plane3.position.z = 50-1500;
-    // scene.add( plane3 );
-    //
-    // //bottom wall
-    // plane4 = new THREE.Mesh( new THREE.PlaneGeometry( 500, 3000, 5, 15 ), new THREE.MeshBasicMaterial( { color: 0xcccccc, wireframe : true	} ) );
-    // plane4.rotation.x = -Math.PI/2;
-    // plane4.position.y = -250;
-    // plane4.position.z = 50-1500;
-    // scene.add( plane4 );
+    // headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 127, [60,400,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
+    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [0,500,700], new THREE.Vector3(0,0,0), {damping : 0.5});
 
 
-    var material = new THREE.MeshBasicMaterial( { overdraw: 0.5, wireframe: true } );
+    // create a skybox
+    var skyGeometry = new THREE.SphereGeometry(2000, 25, 25);
+    var texture = THREE.ImageUtils.loadTexture( "sky-dome.png" );
+    var skyMaterial = new THREE.MeshLambertMaterial({
+        map: texture,
+        shading: THREE.SmoothShading
+    });
+
+    var sky = new THREE.Mesh(skyGeometry, skyMaterial);
+    sky.material.side = THREE.BackSide;
+    scene.add(sky);
+
+
+    //can add wireframe: true for wireframe effect
+    var material = new THREE.MeshPhongMaterial( {color: "#2194ce", side: THREE.DoubleSide, shading: THREE.FlatShading}  );
     var quality = 16, step = 1024 / quality;
     var geometry = new THREE.PlaneGeometry( 3000, 3000, quality - 1, quality - 1 );
+
+    var spotLight = new THREE.SpotLight( 0xffffff );
+    spotLight.position.set( 100, 1000, 100 );
+    spotLight.castShadow = true;
+    spotLight.shadow.mapSize.width = 1024;
+    spotLight.shadow.mapSize.height = 1024;
+
+    spotLight.shadow.camera.near = 500;
+    spotLight.shadow.camera.far = 4000;
+    spotLight.shadow.camera.fov = 30;
+
+    scene.add( spotLight );
 
     //rotate so can view from the top;
     geometry.rotateX( - Math.PI / 2 );
@@ -77,17 +73,19 @@ window.onload = function(){
       geometry.vertices[ i ].y = data[ ( x * step ) + ( y * step ) * 1024 ] * 2 - 128;
     }
 
-    mesh = new THREE.Mesh( geometry, material );
-    scene.add( mesh );
-    renderer = new THREE.CanvasRenderer();
+    var light = new THREE.HemisphereLight( 0xffffbb, 0x080820, 1.5 );
+    scene.add( light );
 
+    mesh = new THREE.Mesh( geometry, material );
+    mesh.position.y = -50;
+    scene.add( mesh );
+    renderer = new THREE.WebGLRenderer();
 
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setClearColor(new THREE.Color("#0d355a"), 1)
     container.innerHTML = "";
     container.appendChild( renderer.domElement );
-
-
   }
 
   function generateHeight( width, height ) {
@@ -113,12 +111,11 @@ window.onload = function(){
   function render() {
     // camera.position.x += ( mouseX - camera.position.x ) * 0.05;
     // camera.position.y += ( - mouseY - camera.position.y ) * 0.05 + 15;
-    // camera.lookAt( scene.position );
+    camera.lookAt( scene.position );
     renderer.render( scene, camera );
-
   }
 
   document.addEventListener('headtrackingEvent', function(event) {
-    // scene.fog = new THREE.Fog( 0x000000, 1+(event.z*27), 3000+(event.z*27) );
+    scene.fog = new THREE.Fog( 0x000000, 1+(event.z*27), 3000+(event.z*27) );
   }, false);
 }
