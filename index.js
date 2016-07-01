@@ -32,7 +32,7 @@ window.onload = function(){
     // set up camera controller
     // was 0,0,100 when just planes
     // headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [60,300,1000], new THREE.Vector3(0,0,0), {damping : 0.5});
-    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [0,0,70], new THREE.Vector3(0,0,0), {damping : 0.5});
+    headtrackr.controllers.three.realisticAbsoluteCameraControl(camera, 27, [0,10,100], new THREE.Vector3(0,0,0), {damping : 0.5});
 
     //---------------- PLANES ----------------------
 
