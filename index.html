@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:800" media="screen" title="no title" charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,600italic,400italic,700italic,800italic' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="style.css" media="screen" title="no title" charset="utf-8">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r74/three.min.js"></script>
     <script type="text/javascript" src='js/Projector.js'></script>
@@ -13,7 +13,15 @@
     <title></title>
   </head>
   <body>
-    <div id="container"></div>
+    <div id="container">
+      <div id="intro-page">
+      </div>
+      <div id="intro-text">
+        <h3>PERSPECTIVE</h3>
+        <p>Experiment moving inside this 3D space using the movements of your head.</p>
+        <div class="start-button">Start</div>
+      </div>
+    </div>
     <canvas id="inputCanvas" width="320" height="240" style="display:none"></canvas>
     <video id="inputVideo" autoplay loop></video>
   </body>

@@ -9,8 +9,19 @@ window.onload = function(){
 
   // Face detection setup
   var htracker = new headtrackr.Tracker({});
-  htracker.init(videoInput, canvasInput);
-  htracker.start();
+
+
+  var startButton = document.getElementsByClassName('start-button')[0];
+  startButton.onclick = function(){
+    var introTextDiv = document.getElementById('intro-text');
+    introTextDiv.style.display = 'none';
+
+    var introPage = document.getElementById('intro-page');
+    introPage.style.opacity = 0;
+
+    htracker.init(videoInput, canvasInput);
+    htracker.start();
+  };
 
   init();
   animate();
@@ -118,4 +129,5 @@ window.onload = function(){
   document.addEventListener('headtrackingEvent', function(event) {
     scene.fog = new THREE.Fog( 0x000000, 1+(event.z*27), 3000+(event.z*27) );
   }, false);
+
 }

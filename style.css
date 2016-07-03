@@ -21,3 +21,41 @@ p#headtrackerMessage{
 #inputVideo{
   display: none !important;
 }
+
+#intro-page{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: black;
+  opacity: 0.5;
+}
+
+#intro-text{
+  width: 100%;
+  background: none;
+  position: absolute;
+  color: white;
+  text-align: center;
+  font-family: 'Open Sans';
+  top: 10em;
+}
+
+#intro-text h3{
+  font-size: 40px;
+}
+
+#intro-text p{
+  font-weight: 200;
+  margin-bottom: 2em;
+  font-size: 18px;
+}
+
+#intro-text .start-button{
+  display: block;
+  padding: 0.5em 1em;
+  cursor: pointer;
+  border: 1px solid white;
+  width: 5em;
+  margin: 0 auto;
+  font-size: 15px;
+}
