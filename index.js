@@ -22,18 +22,18 @@ window.onload = function(){
     htracker.init(videoInput, canvasInput);
     htracker.start();
   };
-
   init();
   animate();
+
 
   function init() {
     container = document.createElement( 'div' );
     document.body.appendChild( container );
 
-    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
-    camera.position.z = 1000;
-    camera.position.x = 1000;
-    camera.position.z = 1000;
+    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 6000 );
+    // camera.position.z = 1000;
+    // camera.position.x = 1000;
+    // camera.position.z = 1000;
     scene = new THREE.Scene();
     var data = generateHeight( 1024, 1024 );
 
@@ -77,7 +77,8 @@ window.onload = function(){
     scene.add( spotLight );
 
     //rotate so can view from the top;
-    geometry.rotateX( - Math.PI / 2 );
+    // geometry.rotateX( - Math.PI / 2 );
+    geometry.rotateX(90);
 
     for ( var i = 0, l = geometry.vertices.length; i < l; i ++ ) {
       var x = i % quality, y = Math.floor( i / quality );

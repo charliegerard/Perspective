@@ -1,4 +1,7 @@
+@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+
 body{
+  font-size: 10px;
   margin: 0;
 }
 
@@ -28,6 +31,16 @@ p#headtrackerMessage{
   position: absolute;
   background-color: black;
   opacity: 0.5;
+  /*background: url("cross-01.png") space;*/
+}
+
+#intro-page::after {
+  content: " ";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: url("cross-01.png") space ;
+  background-size: 20px;
 }
 
 #intro-text{
@@ -36,26 +49,57 @@ p#headtrackerMessage{
   position: absolute;
   color: white;
   text-align: center;
-  font-family: 'Open Sans';
-  top: 10em;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  /*top: 10em;*/
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  align-self: center;
 }
 
 #intro-text h3{
-  font-size: 40px;
+  font-size: 4rem;
+  margin: 0;
 }
 
 #intro-text p{
-  font-weight: 200;
+  font-weight: 300;
   margin-bottom: 2em;
   font-size: 18px;
+  font-family: 'Open Sans';
 }
 
 #intro-text .start-button{
   display: block;
   padding: 0.5em 1em;
   cursor: pointer;
-  border: 1px solid white;
+  border: 3px solid white;
   width: 5em;
   margin: 0 auto;
   font-size: 15px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+#intro-text .social-buttons {
+  margin-top: 20px;
+}
+
+
+#intro-text .social-button {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  /*background: url("social-icon-01.png") cover ;*/
+  background: url("social-icon-01.png") no-repeat;
+  background-size: contain;
+}
+
+#intro-text .social-button:first-of-type {
+  background: url("social-icon-02.png") no-repeat;
+  background-size: contain;
 }
