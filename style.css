@@ -5,9 +5,27 @@ body{
   margin: 0;
 }
 
+#top-bar{
+  background: black;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: block;
+  padding: 1em;
+  text-align: center;
+  z-index: 10;
+  font-family: 'Open Sans';
+}
+
+#top-bar h3{
+  color: lightgrey;
+  margin: 0;
+}
+
 #headtrackerMessageDiv{
   position: absolute;
-  bottom: 0.5em;
+  bottom: 5.5em;
   display: block;
   margin: 0 auto;
   width: 100%;
@@ -102,4 +120,46 @@ p#headtrackerMessage{
 #intro-text .social-button:first-of-type {
   background: url("social-icon-02.png") no-repeat;
   background-size: contain;
+}
+
+#footer{
+  position: absolute;
+  bottom: 0;
+  background: black;
+  width: 100%;
+  margin: 0;
+  padding: 0.5em 1em;
+}
+
+#footer p{
+  font-size: 11px;
+  color: lightgrey;
+  font-family: 'Open Sans';
+  vertical-align: middle;
+  padding: 1em;
+  margin: 0;
+}
+
+#footer p a{
+  color: lightgrey;
+  font-style: italic;
+}
+
+#footer p:first-of-type{
+  float: left;
+}
+
+#footer .footer-left p a{
+  font-size: 11px;
+  font-style: normal;
+  text-decoration: none;
+  margin-right: 1em;
+}
+
+#footer .footer-left{
+  float: right;
+}
+
+#footer .footer-left p{
+  display: inline-block;
 }
