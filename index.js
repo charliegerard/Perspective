@@ -1,6 +1,8 @@
 window.onload = function(){
   var videoInput = document.getElementById('inputVideo');
   var canvasInput = document.getElementById('inputCanvas');
+  var header = document.getElementById('top-bar');
+  var footer = document.getElementById('footer');
   var container, stats;
   var camera, scene, renderer, particle, mesh;
   var mouseX = 0, mouseY = 0;
@@ -10,7 +12,6 @@ window.onload = function(){
   // Face detection setup
   var htracker = new headtrackr.Tracker({});
 
-
   var startButton = document.getElementsByClassName('start-button')[0];
   startButton.onclick = function(){
     var introTextDiv = document.getElementById('intro-text');
@@ -19,12 +20,13 @@ window.onload = function(){
     var introPage = document.getElementById('intro-page');
     introPage.style.opacity = 0;
 
+    displayHeaderAndFooter();
+
     htracker.init(videoInput, canvasInput);
     htracker.start();
   };
   init();
   animate();
-
 
   function init() {
     container = document.createElement( 'div' );
@@ -130,5 +132,18 @@ window.onload = function(){
   document.addEventListener('headtrackingEvent', function(event) {
     scene.fog = new THREE.Fog( 0x000000, 1+(event.z*27), 3000+(event.z*27) );
   }, false);
+
+  var opacity = 0.1;
+  function displayHeaderAndFooter(){
+    var interval = setInterval(function(){
+      if(opacity <= 1.0){
+        header.style.opacity = opacity;
+        footer.style.opacity = opacity;
+      } else {
+        clearInterval(interval)
+      }
+      opacity += 0.08
+    }, 100);
+  }
 
 }
