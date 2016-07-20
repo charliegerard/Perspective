@@ -155,12 +155,16 @@ p#headtrackerMessage{
   width: 15px;
   height: 15px;
   margin: 5px;
-  background: url("social-icon-01.png") no-repeat;
+}
+
+#footer .footer-right .footer-button .social-buttons .social-button.twitter {
+  background: url("social-icon-02.png") no-repeat;
   background-size: contain;
 }
 
-#footer .footer-right .footer-button .social-buttons .social-button:first-of-type {
-  background: url("social-icon-02.png") no-repeat;
+
+#footer .footer-right .footer-button .social-buttons .social-button.facebook {
+  background: url("social-icon-01.png") no-repeat;
   background-size: contain;
 }
 
