@@ -3,6 +3,8 @@ window.onload = function(){
   var canvasInput = document.getElementById('inputCanvas');
   var header = document.getElementById('top-bar');
   var footer = document.getElementById('footer');
+  var aboutLink = document.getElementsByClassName('about-link')[0];
+  var aboutSection = document.getElementById('about-section');
   var container, stats;
   var camera, scene, renderer, particle, mesh;
   var mouseX = 0, mouseY = 0;
@@ -146,4 +148,10 @@ window.onload = function(){
     }, 100);
   }
 
+  //Displaying the About div
+  aboutLink.onclick = function(e){
+    e.preventDefault();
+    console.log('boo')
+    aboutSection.style.display = 'block';
+  }
 }
