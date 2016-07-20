@@ -111,7 +111,11 @@ p#headtrackerMessage{
   padding: 0.5em 1em;
 }
 
-#footer p{
+#footer .footer-left{
+  float: left;
+}
+
+#footer .footer-left p, #footer .footer-right p{
   font-size: 11px;
   color: lightgrey;
   font-family: 'Open Sans';
@@ -120,68 +124,48 @@ p#headtrackerMessage{
   margin: 0;
 }
 
-#footer p a{
+#footer .footer-left p a, #footer .footer-right p a{
   color: lightgrey;
   font-style: italic;
-}
-
-#footer p:first-of-type{
-  float: left;
-}
-
-#footer .footer-right p a{
-  font-size: 11px;
-  font-style: normal;
-  text-decoration: none;
-  margin-right: 1em;
 }
 
 #footer .footer-right{
   float: right;
   overflow: hidden;
+  background: black;
+  margin-right: 1em;
 }
 
-#footer .footer-right p{
+#footer .footer-right .footer-button, #footer .footer-right .footer-button p{
   display: inline-block;
 }
 
-#footer .footer-right .social-buttons {
+#footer .footer-right .footer-button .social-buttons{
   display: inline-block;
-  float: left;
   padding: 0.5em 0;
-  position: absolute;
-  right: -100px;
   width: 6em;
-  -webkit-animation: slide 0.5s forwards;
--webkit-animation-delay: 2s;
-animation: slide 0.5s forwards;
-animation-delay: 2s;
+  bottom: 0.5em;
+  right: 4em;
+  position: absolute;
+  z-index: -10;
 }
 
-@-webkit-keyframes slide {
-    100% { left: 0; }
-}
-
-@keyframes slide {
-    100% { left: 0; }
-}
-
-#footer .footer-right p:hover .social-buttons{
-  transition: 1s;
-  right: 3em;
-}
-
-#footer .footer-right .social-button {
+#footer .footer-right .footer-button .social-buttons .social-button {
   display: inline-block;
   width: 15px;
   height: 15px;
   margin: 5px;
-  /*background: url("social-icon-01.png") cover ;*/
   background: url("social-icon-01.png") no-repeat;
   background-size: contain;
 }
 
-#footer .footer-right .social-button:first-of-type {
+#footer .footer-right .footer-button .social-buttons .social-button:first-of-type {
   background: url("social-icon-02.png") no-repeat;
   background-size: contain;
+}
+
+#footer .footer-right .footer-button:first-of-type:hover > .social-buttons{
+  transition: 1s;
+  margin-right: 7em;
+  z-index: 2;
 }
